@@ -1,0 +1,16 @@
+<% include ./partials/header.ejs%>
+
+<h1>This is a blog page</h1>
+
+<% blogs.forEach((blog)=>{ %>
+    <div>
+        <h2><%= blog.title%></h2>
+        <img src="<%= blog.image%>"><br>
+        <span><%=blog.body.substring(0,100)%>......</span><br>
+        <a href="/blogs/<%= blog.id%>">Read More</a>
+
+
+    </div>
+<%})%>
+
+<% include ./partials/footer.ejs%>
