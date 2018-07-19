@@ -1,5 +1,5 @@
 <%include ./partials/header.ejs%>
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 <div class="ui main text container segment">
     <div class="ui huge header"><%= blog.title%></div>
     <div class="ui top attached "></div>
@@ -13,10 +13,10 @@
         </div>
 
         <form method="post" action="/blogs/<%=blog._id%>?_method=DELETE">
-            <button>Delete</button>
+            <button class="btn btn-outline-danger">Delete</button>
 
         </form>
-        <a href="/blogs/<%=blog._id%>/edit">Edit</a>
+        <a href="/blogs/<%=blog._id%>/edit"><button class="btn btn-outline-info">Update</button></a>
     </div>
 
 
