@@ -14,8 +14,8 @@
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/blogg.png">
 
+    <link rel="shortcut icon" type="image/x-icon" href="/blogg.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
@@ -30,15 +30,15 @@
 
 <div class="ui fixed inverted menu" >
     <div class="ui container">
-        <a href="/"> <div class="header item"><i class="fab fa-blogger" style="font-size: 30px ; margin-right: 10px ; "></i>BlogApp</div></a>
+        <a href="/"> <div class="header item active"><i class="fab fa-blogger" style="font-size: 30px ; margin-right: 10px ; "></i>BlogApp</div></a>
         <a href="/blogs" class="item">Home</a>
         <% if ( currentUser ) { %>
         <a href="/blogs/new" class="item">New Article</a>
         <%} %>
         <div class="right menu">
             <% if (!currentUser ) { %>
-            <a href="/blogs/login" class="item " id="login">LogIn</a>
-            <a href="/blogs/register" class="item active" id="register">Sign-Up</a>
+            <a href="/blogs/login" class="item" id="login">LogIn</a>
+            <a href="/blogs/register" class="item" id="register">Sign-Up</a>
             <%} else { %>
             <a href="#" class="item  ui " id="UserName"> Signed as <%= currentUser.username %> </a>
             <a href="/blogs/logout" class="ui item " id="logout" >LogOut</a>
@@ -75,33 +75,31 @@
 
 
 
+<link rel="stylesheet" href="stylesheets/landing.css">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="content" id="home">
+                <h1>BlogApp</h1>
+                <h3>A Plateforme to read the latest articles and create new blogs </h3>
+                <hr>
+                <br>
+                <br>
+                <a href="/blogs/register">
+                <div class="ui animated green fade button" tabindex="0">
+                    <div class="visible content">Get Started and Create your first blog now !</div>
+                    <div class="hidden content">
+                       Sign-Up Now <i class="fas fa-arrow-right" style="margin-left : 5px ; "></i>
 
 
-<form action="/register" method="post" style="padding-top : 10px ;">
+                    </div>
+                </div>
+                </a>
 
-    <div class="ui inverted segment main container text">
-        <div class="ui huge header">
-            Register
-        </div>
-        <div class="ui inverted form">
-            <div class="field">
-                <label>Your Name</label>
-                <input type="text" name="username" placeholder="UserName">
             </div>
-            <div class="field">
-                <label>Your Mail</label>
-                <input type="text" name="mail" placeholder="Mail">
-            </div>
-            <div class="field">
-                <label>Your Password</label>
-                <input type="password" name="password" placeholder="Password" >
-            </div>
-            <button class="ui green inverted button" type="sumbit">Register</button>
         </div>
     </div>
-    </div>
-</form>
+</div>
 
-
-
+<script src="/scripts/background.js"></script>
 <% include ../partials/footer %>

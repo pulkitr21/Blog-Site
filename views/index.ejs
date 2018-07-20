@@ -1,16 +1,127 @@
-<% include ./partials/header.ejs%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title> BlogApp </title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121911619-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-<h1>This is a blog page</h1>
+  gtag('config', 'UA-121911619-1');
+</script>
 
-<% blogs.forEach((blog)=>{ %>
-    <div>
-        <h2><%= blog.title%></h2>
-        <img src="<%= blog.image%>"><br>
-        <span><%=blog.body.substring(0,100)%>......</span><br>
-        <a href="/blogs/<%= blog.id%>">Read More</a>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/blogg.png">
 
 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="/app.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js
+
+"></script>
+
+</head>
+<body>
+
+<div class="ui fixed inverted menu" >
+    <div class="ui container">
+        <a href="/"> <div class="header item"><i class="fab fa-blogger" style="font-size: 30px ; margin-right: 10px ; "></i>BlogApp</div></a>
+        <a href="/blogs" class="item active">Home</a>
+        <% if ( currentUser ) { %>
+        <a href="/blogs/new" class="item">New Article</a>
+        <%} %>
+        <div class="right menu">
+            <% if (!currentUser ) { %>
+            <a href="/blogs/login" class="item" id="login">LogIn</a>
+            <a href="/blogs/register" class="item" id="register">Sign-Up</a>
+            <%} else { %>
+            <a href="#" class="item  ui " id="UserName"> Signed as <%= currentUser.username %> </a>
+            <a href="/blogs/logout" class="ui item " id="logout" >LogOut</a>
+            <%} %>
+
+        </div>
     </div>
-<%})%>
 
-<% include ./partials/footer.ejs%>
+</div>
+
+<div class="container">
+    <% if ( !(success.length == 0) ) { %>
+    <div class="ui message success transition ">
+        <i class="close icon"></i>
+        <div class="header">
+
+        </div>
+        <p>
+            <%= success %>
+        </p>
+    </div>
+    <% } %>
+    <% if ( !(error.length == 0) ) { %>
+    <div class="ui message error transition ">
+        <i class="close icon"></i>
+        <div class="header">
+            Oops !! There is a problem !
+        </div>
+        <p>  <%= error %>
+        </p>
+    </div>
+    <% } %>
+</div>
+
+
+
+
+
+<div class="ui divided items container">
+			<h1> Blog App </h1>
+    <% Blogs.forEach(function(blog) { %>
+
+    <div class="item container ">
+        <div class="image" style="
+          background-image: url(<%= blog.image %>);
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+        ">
+        </div>
+        <div class="content">
+            <a class="header"  href="/blogs/<%=blog._id%>"> <%= blog.title %></a>
+            <div class="meta">
+                <span><%- blog.body.substring(0 ,100) %> .....</span>
+            </div>
+            <div class="ui large star rating"></div>
+
+            <div class="extra">
+             <!--   <a href="/blogs/<%=blog._id%>" class="ui floated basic violet button ">
+                Read More <i class=""> </i> </a>-->
+<a href="/blogs/<%=blog._id%>">
+                <button class="ui right labeled violet icon button">
+                    <i class="right icon chevron" style="font-size: 20px ;"></i>
+                    Read More
+                </button> </a>
+
+                <span> <%= blog.created.toDateString() %></span>
+            </div>
+        </div>
+    </div>
+    <% }) %>
+</div>
+
+  <script>
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+                .closest('.message')
+                .transition('fade' , 1000)
+            ;
+        })
+    ;
+</script>
+
+
+<!-- <% include ../partials/footer %> -->

@@ -3,13 +3,14 @@
 <head>
     <title> BlogApp </title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121911619-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-121911619-1');
-    </script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121911619-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-121911619-1');
+</script>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
@@ -21,6 +22,7 @@
 
     <link rel="stylesheet" type="text/css" href="/app.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js
+
 "></script>
 
 </head>
@@ -52,6 +54,7 @@
     <div class="ui message success transition ">
         <i class="close icon"></i>
         <div class="header">
+
         </div>
         <p>
             <%= success %>
@@ -92,7 +95,7 @@
             <button class="ui green inverted button" type="sumbit">Login</button>
         </div>
     </div>
-    </div>
+</div>
 </form>
 
-<% include partials/footer.ejs %>
+<% include ../partials/footer %>

@@ -1,27 +1,28 @@
-<% include ./partials/header.ejs%>
+<% include ../partials/header %>
 
 <div class="ui main text container segment">
-    <div class="ui huge header">Edit </div>
+    <div class="ui huge header ">
+        Edit <%= Blog.title %>
+    </div>
 
-    <form class="ui form" action="/blogs/<%=blog.id%>?_method=PUT" method="post">
+
+    <form action="/blogs/<%=Blog._id%>?_method=PUT" method="POST" class="ui form">
         <div class="field">
             <label>Title</label>
-            <input type="text" name="blog[title]" value="<%=blog.title%>">
+            <input type="text" name="blog[title]" value="<%= Blog.title %>">
         </div>
         <div class="field">
             <label>Image</label>
-            <input type="text" name="blog[image]" value="<%=blog.image%>">
+            <input type="text" name="blog[image]" value="<%= Blog.image %>">
         </div>
-
-        <div class="field">
-            <label>Blog Content</label>
-            <textarea name="blog[title]"><%=blog.body%></textarea>
-        </div>
-
-
-        <input class="ui violet big basic button" type="submit">
-
+        <div class="ui form">
+            <div class="field">
+                <label>Blog Post</label>
+                <textarea name="blog[body]"><%= Blog.body%></textarea>
+            </div>
+            <button class="ui black button" type="sumbit">Save</button>
     </form>
 </div>
 
-<% include ./partials/footer.ejs%>
+
+<% include ../partials/footer %>

@@ -1,29 +1,94 @@
-<%include ./partials/header.ejs%>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-<div class="ui main text container segment">
-    <div class="ui huge header"><%= blog.title%></div>
-    <div class="ui top attached "></div>
-    <div class="item">
-        <img class="centered ui rounded image" src="<%= blog.image%>"><br>
-        <div class="content">
-            <span><%=blog.created.toDateString()%></span><br>
-        </div>
-        <div class="description">
-            <p><%=blog.body%></p>
-        </div>
+<% include ../partials/header %>
 
-        <form method="post" action="/blogs/<%=blog._id%>?_method=DELETE">
-            <button class="btn btn-outline-danger">Delete</button>
+<div class="ui main container text segment">
+    <div class="ui huge header">
+        <%= blog.title %>
 
-        </form>
-        <a href="/blogs/<%=blog._id%>/edit"><button class="btn btn-outline-info">Update</button></a>
+    </div>
+    <br>
+
+    <div class="ui top attached">
+        <div class="item">
+           <img src="<%= blog.image%>" class="ui rounded image centered">
+
+
+
+<br> <br>
+            <div class="description">
+                <p> <%- blog.body %></p>
+            </div>
+<br><br>
+            <div class="content">
+                <span> Publication Date : <%= blog.created.toDateString() %></span>
+            </div>
+            <div class="content">
+                <em>  <span> Submitted By : <%= blog.author %></span> </em>
+            </div>
+
+        </div>
+        <br>
+
+                <% if ( (currentUser) && ( currentUser.username == blog.author ) ) {  %>
+
+        <div class="ui large buttons">
+            <a href="/blogs/<%= blog._id%>/edit" > <button class="ui button green ">Edit</button></a>
+            <div class="or"></div>
+            <form action="/blogs/<%=blog._id%>?_method=DELETE" method="post">
+                <button class="ui button red  ">Delete</button> </form>
+        </div>
+        <% } %>
+    </div>
+</div>
+<div class="ui main container text segment">
+    <div class="ui huge header">
+        Comments
+
     </div>
 
+     <% if (blog.comments.length != 0 )  { %>
+    <% blog.comments.forEach(function(comment){ %>
+    <div class="ui raised segment">
+    <h5 style="display: inline ; padding-right : 5px ;">  <%= comment.name %>  :  </h5>
+        <p style="display: inline ;"> <%= comment.content %></p>
+        
 
+    </div>
 
-
-
-
+    <% }) %>
+    <% } else { %>
+    <div class="ui raised segment">
+        <p style="display: inline ;"> No Comment Here </p>
+    </div>
+    <% } %>
 </div>
 
-<%include ./partials/footer.ejs%>
+<form action="/blogs/<%=blog._id%>/comment" method="post" >
+<div class="ui inverted segment main container text">
+    <div class="ui huge header">
+       Add a Comment
+    </div>
+    <div class="ui inverted form">
+        <div class="field">
+            <label>Your Comment</label>
+            <textarea type="text" name="comment" > </textarea>
+        </div>
+        <button class="ui black inverted button" type="sumbit">Submit</button>
+    </div>
+</div>
+</form>
+
+
+
+<% include ../partials/footer %>
+
+<script src="/ideal-image-slider.js"></script>
+	<script src="/iis-bullet-nav.js"></script>
+	<script>
+	var slider = new IdealImageSlider.Slider('#slider');
+	slider.addBulletNav();
+	slider.start();
+	</script>
+
+<script>
+    document.querySelector("footer").style.position = "relative" ;
+</script>
