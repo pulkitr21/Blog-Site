@@ -28,15 +28,14 @@
         </div>
         <br>
 
-                <% if ( (currentUser) && ( currentUser.username == blog.author ) ) {  %>
+
 
         <div class="ui large buttons">
             <a href="/blogs/<%= blog._id%>/edit" > <button class="ui button green ">Edit</button></a>
             <div class="or"></div>
             <form action="/blogs/<%=blog._id%>?_method=DELETE" method="post">
                 <button class="ui button red  ">Delete</button> </form>
-        </div>
-        <% } %>
+        </div>>
     </div>
 </div>
 <div class="ui main container text segment">

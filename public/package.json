@@ -1,0 +1,20 @@
+{
+  "name": "semantic-ui-css",
+  "version": "2.3.1",
+  "title": "Semantic UI",
+  "description": "CSS Only distribution of Semantic UI",
+  "homepage": "http://www.semantic-ui.com",
+  "author": "",
+  "license": "",
+  "main": "semantic.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Semantic-Org/Semantic-UI-CSS.git"
+  },
+  "bugs": {
+    "url": "s"
+  },
+  "dependencies": {
+    "jquery": "x.*"
+  }
+}
