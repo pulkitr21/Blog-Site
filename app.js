@@ -14,7 +14,7 @@ const    User = require("./models/user") ;
 
 
 const methodOverride=require('method-override');
-
+var alrt = 0 ;
 
 mongoose.connect('mongodb://localhost/blogapp');
 
@@ -90,100 +90,200 @@ app.use(function (req,res,next) {
 
 app.get('/',(req,res)=>{
 
-    res.redirect('/blogs')
+    res.render("home") ;
 })
 
+
+
+
+
 app.get('/blogs',(req,res)=>{
-    Blog.find({},(err,blogs)=>{
-        if(err){
-            console.log(err)
+    Blog.find({} , function(err ,Blogs) {
+        if(err) {
+            req.flash("error" , err) ;
         }
-        else{
-            res.render('index.ejs',{blogs:blogs})
+        else {
+            res.render("index" , { Blogs : Blogs }) ;
         }
     })
 
 
-})
-app.get('/blogs/new',(req,res)=>{
+});
+
+app.post("/new" , function (req,res) {
+    Blog.create( req.body.blog , function (err , createdBlog) {
+        if(err) { req.flash("error" , err)} else {
+            createdBlog.author = req.user.username ;
+            createdBlog.authorID = req.user._id ;
+            createdBlog.save() ; }
+    }) ;
+    req.flash("success" , "A new blog has been added") ;
+    res.redirect("/blogs") ;
+});
+
+
+app.get('/blogs/new',IsLoggedIn,(req,res)=>{
 
 res.render('new.ejs')
 })
 
-// --------------------Creating Blogs-----------------------
-
-app.post('/blogs',(req,res)=>{
-
-    Blog.create(req.body.blog,  (err,newBlog)=> {
-        if(err){
-            res.render('new.ejs')
-        }
-        else{
-            res.redirect('/blogs')
-        }
-    })
+app.get("/blogs/register" , function (req,res) {
+    res.render("register") ;
 })
 
-// ------------------SHOW-------------
-
-app.get('/blogs/:id',(req,res)=>{
-
-    Blog.findById(req.params.id,(err,foundBlog)=>{
-        if(err){
-            console.log(err);
-            res.redirect('/blogs')
-        }else{
-
-            res.render('show.ejs',{blog:foundBlog})
+app.post("/register" , function (req,res) {
+    /*req.body.username
+    req.body.password*/
+    User.register(new User ({username : req.body.username }) ,  req.body.password , function (err , user ) {
+        if (err) {
+            console.log(err) ;
+            req.flash("error" , err.message)
+            return res.render("register") ;
         }
+        passport.authenticate("local")(req,res,function () {
+            req.flash("success" , " Welcome To BlogApp  " +  user.username) ;
+            app.mailer.send('mail', {
+                to: req.body.mail , // REQUIRED. This can be a comma delimited string just like a normal email to field.
+                subject: 'Welcome To BlogApp', // REQUIRED.
+                otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+            }, function (err) {
+                if (err) {
+                    // handle error
+                    console.log(err);
+                    //res.send('There was an error sending the email');
+                    return;
+                }
+                // res.send('Email Sent');
+            });
+            res.redirect("/blogs") ;
+        });
+    });
 
-    })
-    //res.send("Hey there")
-})
 
-//-----------------EDIT--------------------
 
-app.get('/blogs/:id/edit',(req,res)=>{
-   // res.render('edit.ejs')
-    Blog.findById(req.params.id,(err,foundBlog)=>{
-        if(err){
-            console.log(err);
-            res.redirect('/blogs')
-        }else{
 
-            res.render('edit.ejs',{blog:foundBlog})
-        }
 
-    })
-app.put('/blogs/:id',(req,res)=>{
-    Blog.findByIdAndUpdate(req.params.id,req.body.blog,(err,updatedBlog)=>{
-        if(err){
-            res.redirect('/blogs');
-        }
-        else{
-            res.redirect('/blogs/'+req.params.id);
-        }
-
-    })
-
-})
 });
 
-app.delete('/blogs/:id',(req,res)=>{
+app.get("/blogs/login" , function (req,res) {
+    res.render("login") ;
+})
 
-    //res.send('yooooooo')
+app.post("/login" ,passport.authenticate("local" , {
+    failureRedirect : "/blogs/login" ,
+    failureFlash : " Invalid username or password " ,
+    successRedirect : "/blogs" ,
+    successFlash : "Welcome !  "  ,
 
-    Blog.findByIdAndRemove(req.params.id,(err,)=>{
+}), function (req,res) {
+});
 
-        if(err){
-            console.log(err)
-            res.redirect('/blogs')
-        }
-        else {
-            res.redirect('/blogs')
+app.get("/blogs/logout" , function (req,res) {
+
+    req.flash("success" , " GoodBye  !  " + req.user.username) ;
+    req.logout() ;
+    res.redirect("/blogs") ;
+});
+
+
+
+app.get("/blogs/:id"  ,function (req,res) {
+    Blog.findById( req.params.id , function (err , foundBlog) {
+        if(err) {
+            req.flash("error" , err.message) ;
+            res.redirect("/blogs")} else {
+            res.render("show" , {blog : foundBlog , req : req })
+
         }
     })
 })
+
+app.get("/blogs/:id/edit" , function (req,res) {
+    Blog.findById(req.params.id , function (err , foundBlog) {
+        if ( err) {
+            req.flash("error" , err.message) ;
+            res.redirect("/blogs") } else {
+            res.render("edit" , {Blog : foundBlog })
+        }
+    })
+
+})
+
+
+app.put("/blogs/:id" ,  function(req,res) {
+
+    if ( req.isAuthenticated()) {
+        Blog.findById(req.params.id  , function(err, foundBlog) {
+            if (req.user._id == foundBlog.authorID ) {
+                Blog.findByIdAndUpdate( req.params.id , req.body.blog , function (err , updatedBlog ) {
+                    if (err) {
+                        req.flash("error" , err.message) ;
+                        res.redirect("/blogs")} else {
+                        req.flash("success" , "The blog has been edited") ;
+                        res.redirect("/blogs/"+req.params.id) ;
+
+
+                    }
+                })
+            } else {
+
+                res.send("YO DON'T HAVE PERMISSION TO DO THAT !!") ;
+            }
+        })
+
+    } else {
+        res.send("YOU NEED TO BE LOGGED IN TO DO THAT !! ") ;
+    }
+
+})
+
+
+app.delete("/blogs/:id" ,  function(req,res) {
+
+    if ( req.isAuthenticated()) {
+        Blog.findById(req.params.id  , function(err, foundBlog) {
+            if (req.user._id == foundBlog.authorID ) {
+                Blog.findByIdAndRemove(req.params.id , function() {
+                    req.flash("success" , "The blog has been deleted") ;
+                    res.redirect("/blogs");
+                })
+            } else {
+
+                req.flash("error"," You don't have permission to do that ") ;
+                res.redirect("/blogs") ;
+            }
+        })
+
+    } else {
+        req.flash("error","You need to be logged in to do that") ;
+        res.redirect("/blogs") ;
+    }
+
+})
+
+app.post("/blogs/:id/comment" ,IsLoggedIn ,  function (req,res) {
+    Blog.findById( req.params.id , function (err , foundBlog) {
+        if(err) { req.flash("error" , err.message)} else {
+
+            foundBlog.comments.push({ name : req.user.username  , content : req.body.comment})  ;
+            foundBlog.save();
+            req.flash("success" , "Successfully added comment")
+
+        }
+    })
+
+    res.redirect("/blogs/"+req.params.id) ;
+})
+
+function IsLoggedIn (req , res , next) {
+    if(req.isAuthenticated()) {
+        return next() ;
+    }
+    req.flash("error" , "You need to be logged in to do that") ;
+    res.redirect("/blogs/login") ;
+}
+
+//app.listen(port , () => console.log("SERVER HAS STARTED , CHECK  " + port)) ;
 
 app.listen(3232, ()=>{
     console.log('Server started at http://localhost:3232');
