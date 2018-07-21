@@ -1,4 +1,4 @@
-var port = process.env.PORT || 3000 ;
+var port = process.env.PORT || 3232 ;
 
 var alrt = 0 ;
 var express = require("express") ,
@@ -287,4 +287,4 @@ function IsLoggedIn (req , res , next) {
     res.redirect("/blogs/login") ;
 }
 
-app.listen(port , () => console.log("SERVER HAS STARTED , CHECK  " + port)) ;
+app.listen(port , () => console.log(`SERVER HAS STARTED AT http://localhost:${port}`)) ;
