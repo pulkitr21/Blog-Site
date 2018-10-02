@@ -118,7 +118,7 @@ app.post("/new" , function (req,res) {
             createdBlog.authorID = req.user._id ;
             createdBlog.save() ; }
     }) ;
-    req.flash("success" , "A new blog has been added") ;
+    req.flash("success" , "A new Blog has been added!") ;
     res.redirect("/blogs") ;
 })
 
@@ -178,7 +178,7 @@ app.post("/login" ,passport.authenticate("local" , {
 
 app.get("/blogs/logout" , function (req,res) {
 
-    req.flash("success" , " GoodBye  !  " + req.user.username) ;
+    req.flash("success" , " GoodBye!  " + req.user.username) ;
     req.logout() ;
     res.redirect("/blogs") ;
 });
@@ -228,7 +228,7 @@ app.put("/blogs/:id" ,  function(req,res) {
                 })
             } else {
 
-                res.send("YO DON'T HAVE PERMISSION TO DO THAT !!") ;
+                res.send("LOL, WHO D FK GAVE YOU PERMISSION TO DO THAT !!") ;
             }
         })
 
@@ -245,7 +245,7 @@ app.delete("/blogs/:id" ,  function(req,res) {
         Blog.findById(req.params.id, function (err, foundBlog) {
             //  if (req.user._id == foundBlog.authorID ) {
             Blog.findByIdAndRemove(req.params.id, function () {
-                req.flash("success", "The blog has been deleted");
+                req.flash("success", "This blog no longer exists");
                 res.redirect("/blogs");
             })
             // } else {
