@@ -14,9 +14,7 @@ var express = require("express") ,
     passportLocalMongoose = require("passport-local-mongoose") ,
     User = require("./models/user") ;
 
-
-mongoose.connect("mongodb://localhost/Blog");
-
+    mongoose.connect("mongodb://localhost/Blog");
 
 
 app.use(bodyParser.urlencoded({extended:true}));
@@ -228,7 +226,7 @@ app.put("/blogs/:id" ,  function(req,res) {
                 })
             } else {
 
-                res.send("LOL, WHO D FK GAVE YOU PERMISSION TO DO THAT !!") ;
+                res.send("PERIMISSION NOT GRANTED !!") ;
             }
         })
 

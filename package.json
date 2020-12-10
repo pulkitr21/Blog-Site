@@ -1,0 +1,37 @@
+{
+  "name": "blog-site",
+  "version": "1.0.0",
+  "description": "blogging app",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "express-fileupload": "^0.4.0",
+    "express-session": "^1.15.6",
+    "express-mailer": "^0.3.1",
+    "method": "^2.0.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.2.1",
+    "override": "^0.0.1",
+    "passport": "^0.4.0",
+    "passport-local-mongoose": "^5.0.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phantombeast/Blog-Site.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phantombeast/Blog-Site/issues"
+  },
+  "homepage": "https://github.com/phantombeast/Blog-Site#readme"
+}
